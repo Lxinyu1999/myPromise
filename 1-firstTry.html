@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise初体验</title>
+</head>
+<body>
+    <div class="container">
+        <h2 class="page-header">Promise 初体验</h2>
+        <button class="btn btn-primary" id="btn">点击抽奖</button>
+    </div>
+
+    <script>
+        // 生成随机数
+        function rand(m,n){
+            return Math.ceil(Math.random()*(n-m+1))+m-1;
+        }
+
+        // 点击按钮，1s后显示是否中奖（30%概率）
+        const btn = document.querySelector('#btn');
+        // 绑定click
+        btn.addEventListener('click',()=>{
+        //     // 设置定时器
+        //     setTimeout(()=>{
+        //         //30%几率，从1-100随机取数字，<33 为中奖
+        //         let n = rand(1,100)
+        //         if(n<=33){
+        //             alert("中奖了！")
+        //         }else{
+        //             alert("再接再厉")
+        //         }
+        //     })
+
+        // },1000)
+
+        /** Promise 形式实现
+         *  它可以包裹一个异步操作，内部封装一个异步操作
+         * 成功调用resolve，失败调用reject
+        */
+        const p = new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                let n = rand(1,100)
+                if(n<=33){
+                    resolve() //将promise对象p的状态设置为成功fullfilled
+                }else{
+                    reject() // 将p的状态设置为失败
+                }
+
+            },1000)
+        })
+
+        // 在哪里调用结果呢？通过then方法（resolve和then的联系是promise内部实现的）
+        // then方法需要接收两个参数，这两个参数也都是函数，then(f1,f2)，顺序是固定的
+        // 其中f1是对象成功时的回调操作，f2是对象失败时的回调操作
+        p.then(()=>{
+            alert('恭喜中奖')
+        },()=>{
+            alert('再接再厉')
+        })
+    }
+    )
+    </script>
+
+</body>
+</html>
