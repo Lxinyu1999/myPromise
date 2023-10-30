@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取resolve参数</title>
+</head>
+<body>
+    <div class="container">
+        <h2 class="page-header">Promise 初体验</h2>
+        <button class="btn btn-primary" id="btn">点击抽奖</button>
+    </div>
+
+    <script>
+        const btn = document.getElementsByTagName('button')[0];
+
+        // 生成随机数
+        function rand(m,n){
+            return Math.ceil(Math.random()*(n-m+1))+m-1;
+        }
+
+        btn.onclick = () => {
+            const p = new Promise(function(resolve,reject){
+
+                setTimeout(()=>{
+                    let n = rand(1,100)
+                    if(n<=33){
+                        // 把参数传给then(f1,f2)的成功函数f1
+                        resolve(n)
+                    }else{
+                        // 把参数传给then的失败函数f2
+                        reject(n)
+                    }
+                },1000)
+            });
+
+            // 调用then
+            // value和reason你可以写成任何形式，这里如果和上面对应应该都是n
+            p.then((value)=>{
+                alert("恭喜中奖，您抽的数字是："+value)
+            },(reason)=>{
+                alert("未中奖，您抽到的数字是："+reason)
+
+            })
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolve与Reject函数</title>
+</head>
+<body>
+    <script>
+        /** 1. resolve是Promise类的静态方法，可以直接调用 */
+        // 如果传入的参数是非Promise类型，则返回一个成功的promise对象
+        let p1 = Promise.resolve(521); // 这里传个数字进去，是非promise，返回的p1就是fullfilled promise对象
+        console.log(p1); // Promise { 521 }
+
+        // 如果传入的参数是Promise类型，则该对象的结果就是resolve(x)返回的结果。
+        // 如果x是resolved，则p2是resolved；如果x是rejected，p2是rejected。
+        let p2 = Promise.resolve(Promise.resolve(110)); // 这里是传入一个成功的promise对象
+        console.log(p2) // fullfilled
+
+        // 这里表示往Promise.resolve（）括号里面传入一个新建的Promise对象，该对象的状态是rejected
+        let p3 = Promise.resolve(new Promise((res,rej)=>{
+            rej("error");
+        }))
+        console.log(p3) // [[PromiseState]]: "rejected" ; [[PromiseResult]]: "error"
+
+        p3.catch((reason)=>{
+            console.warn(reason)
+        })
+
+
+        /** 2. reject() 用法和 resolve一样，是静态方法，可以直接调用 
+         *  用于快速返回一个rejected Promise对象
+        */
+
+        let p4 = Promise.reject(911); // [[PromiseState]]:"rejected"；[[PromiseResult]]: 911
+        console.log(p4)
+
+        // 即便你往reject里面传入一个resolved对象，它依然返回的是失败的promise 对象
+        let p5 = Promise.reject(Promise.resolve(111)); // [[PromiseState]]:"rejected"; [[PromiseResult]]: Promise
+        console.log(p5);
+    </script>
+</body>
+</html>
