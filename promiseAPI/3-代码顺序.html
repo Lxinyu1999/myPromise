@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise当中的宏任务与微任务</title>
+</head>
+<body>
+    <script>
+        /** 有关promise状态改变和then方法定义
+         *  promise本身可以同步，也可以异步，取决于你在promise里面是否使用异步操作。
+         *  任务的执行顺序：同步任务（主线程）→ 当前宏任务（可以被理解为放到主线程里面了）→ 微任务队列清空 → 下一个宏任务
+         *  如果异步操作，则then和promise内部的异步操作进行绑定，成为当前宏任务和微任务；微任务只有在当前宏任务执行过后才会执行。
+         *  如果同步操作，那么then作为独立的回调函数或者说微任务，当resolve/reject使用的一刻被加入到微任务队列里面；当最后所有同步任务结束才能执行微任务then
+        */
+
+        // Promise的构造函数是同步任务，即和主线程一样按照由上到下的顺序触发。
+        let p = new Promise((res,rej)=>{
+            setTimeout(()=>{ // 使用异步操作，相当于宏任务。就好比炖完鸡才能吃鸡一样，只有该函数等待结束，然后执行也结束时，微任务then才会开始执行。
+                res("OK"); // 唤醒then，把它放到微任务队列当中，不过then要等到当前咱这个宏任务执行结束才能触发。
+                console.log("我第二个触发，我在then前面！") // 它在当前宏任务里面，因此优先于then触发
+            },1000)
+            // res("直接ok") // 如果直接resolve（），则没有宏任务，then在此时被回调，放到微任务队列，等下面先log完之后开始执行。
+        })
+        p.then(value=>{ // 微任务，被放到微任务队列里面，等待下面的主线程任务结束后会优先调用它。
+            console.log(value)
+        })
+        console.log("我先触发")
+
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise类的all与race</title>
+</head>
+<body>
+    <script>
+        /**
+         * 1. all也是Promise的静态方法。它要求传入一个数组，每个元素都是Promise对象
+         *    和与运算很相似，必须所有的Promise对象都是fullfilled状态，才返回成功
+         *    否则返回rejected。
+        */
+       let p1 = new Promise((res,rej)=>{
+        // 这里为什么是fullfilled，因为是同步执行，所以肯定会执行res函数，它会修改为resolved
+        // 那之前呢？之前用if把两种情况分支括起来了，所以不会立即执行。
+        res("ok");
+       })
+       let p2 = Promise.reject("oh yeah");
+       let p3 = Promise.resolve("日天哥");
+
+       // 传入一个数组，里面是Promise对象
+       let result = Promise.all([p1,p2,p3]);
+       console.log(result);
+
+
+       /**
+        *  2. race也是静态方法，他接受的也是数组，只不过它的返回promise对象
+        * 和数组中第一个改变状态的promise对象一致
+       */
+
+        let  p4 = new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                resolve("延时启动")
+            },1000)
+        })
+
+       let result2 = Promise.race([p4,p2,p3])
+       console.log(result2);
+    </script>
+</body>
+</html>

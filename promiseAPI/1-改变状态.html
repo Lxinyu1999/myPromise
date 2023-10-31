@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>改变promise对象的状态</title>
+</head>
+<body>
+    <script>
+        /**  怎么修改Promise类的状态的？实际上有三种方法
+         *  
+         */
+
+        // 注意：这里修改状态是立即生效的
+        // 补充：之前呢？我们之前经常用if把两种情况分支括起来了，所以不会立即执行。
+        let p = new Promise((resolve,reject)=>{
+            // ① resolve 函数进行状态修改
+            // resolve('Ok') // 调用它的时候，pending → fulfilled
+
+            // ② reject 函数进行状态修改
+            // 注意，由于Promise的状态只能修改一次，所以只有第一个函数生效，后续的调用将被忽略
+            // 之前经常用if把两种情况分开讨论就是这个原因，实际上只有一个分支可能执行
+            // reject('error') // 调用它的时候，pending → rejected
+            // 另外，如果reject后续最好捕捉catch一下error，要不会一直报错。
+
+            // ③ 抛出错误
+            throw "出问题了"
+        })
+        console.log(p)
+    </script>
+</body>
+</html>
