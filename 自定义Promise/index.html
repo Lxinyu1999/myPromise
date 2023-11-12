@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义Promise测试页</title>
+    <script src="./MyPrmoise-class.js"></script>
+</head>
+<body>
+    <script>
+        /* 
+           此页面是模拟程序员客户实际去用你封装好的Promise的过程
+        */
+    //     let p = new Promise((resolve,reject)=>{
+    //         setTimeout(()=>{
+    //             resolve("ok")
+    //         },100)
+
+    //     })
+
+
+    //     console.log(p)
+    //     // p.then(value => {
+    //     //     console.log(111);
+    //     // }, reason => {
+    //     //     console.log('拒绝1:', reason);
+    //     // }).then(value => {
+    //     //     console.log(222);
+    //     // }, reason => {
+    //     //     console.log('拒绝2:', reason);
+    //     // }).then(value => {
+    //     //     console.log(333);
+    //     // }, reason => {
+    //     //     console.log('拒绝3:', reason);
+    //     // }).catch(reason => {
+    //     //     console.log(reason);
+    //     // });
+
+    //     p.then().then(value=>{
+    //     console.log(222)
+    // }).then(value=>{
+    //     console.log(333)
+    // }).catch(reason=>{
+    //     console.log(reason) // 原始Promise异步失败
+    // })
+
+        const p1 = new Promise((res,rej)=>{
+            setTimeout(()=>{
+                res("Ok")
+            },0)
+        })
+        console.log(p1);
+
+        const p2 = Promise.resolve('err')
+        console.log(p2)
+
+        let p3 = Promise.resolve(new Promise((res,rej)=>{
+            res("成功，但是失败了")
+        }))
+        let result = Promise.all([p1,p2,p3])
+        console.log(result)
+
+
+        // let p = new Promise((res,rej)=>{
+        //     res("ok")
+        //     console.log(111)
+        // })
+        // p.then(value=>{
+        //     console.log(222)
+        // },reason=>{
+        //     console.log(444)
+        // })
+        // console.log(333)
+
+    </script>
+</body>
+</html>

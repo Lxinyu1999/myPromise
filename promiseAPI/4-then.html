@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>then()方法的返回结果是Promise对象</title>
+</head>
+<body>
+    <script>
+        let p = new Promise((res,rej)=>{
+            res('Ok')
+        })
+
+        /** 之前我们都是直接执行then方法，现在我们查看该方法返回了什么。
+         then返回的是Promise对象，且该对象的状态（fulfilled、rejected）和你在哪个分支，在该分支里面做了什么有关 */
+        let result = p.then(value=>{
+            // 什么都不做，进入res分支，则为fulfilled
+            console.log(value)
+
+            // 如果抛出异常，则尽管是在res分支下，也会变成rejected
+            // throw("抛出异常，则变为rejected！")
+
+            // 返回结果是非Promise对象，也是fulfilled状态（但是值是521）
+            // return 521;
+
+
+            // 返回promise对象，那就会直接覆盖result为你现在定义的对象
+            return new Promise((res,rej)=>{
+                rej('在里面我返回rejected对象')
+            })
+
+        },reason=>{
+            // 什么都不做，进入rej分支，则返回的为rejected
+            console.warn(reason)
+        })
+        console.log(result) // [[Prototype]]: Promise
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>异常穿透</title>
+</head>
+<body>
+    <script>
+        let p = new Promise((res,rej)=>{
+            setTimeout(()=>{
+                res('我不输出');
+            },1000)
+        })
+
+        p.then(value=>{
+            console.log(111)
+            throw "输出我，不输出下面的"
+        }).then(value=>{
+            throw "我不输出"
+        }).then(value=>{
+            console.log(333)
+        }).catch(reason=>{
+            console.warn(reason);
+        })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /** async是关键字，用于异步函数
+         *  被修饰的函数会返回一个Promise对象
+         */
+        async function f1(){
+            // do nothing，意味着返回undefined
+        } 
+        result = f1()
+        console.log(result) // Promise { undefined }
+
+        // 返回非Promise对象，依然是fulfilled
+        async function f2(){
+            return 521
+        }
+        result2 = f2()
+        console.log(result2) // Promise { 521 }
+
+        // 返回Promise对象，根据你返回的状态决定(注意在node.js里面是返回pending状态)
+        async function f3(){
+            return new Promise((res,rej)=>{
+                rej('err')
+            })
+        }
+        result3 = f3()
+        console.log(result3);
+
+
+        // 抛出错误，rejected
+        async function f4(){
+            throw 'err2'
+        }
+        result4 = f4();
+        console.log(result4) // Promise { <rejected> 'err2' }
+    </script>
+</body>
+</html>

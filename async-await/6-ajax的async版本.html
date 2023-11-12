@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>发送请求</button>
+    <script>
+        // 用promise包装sendAjax函数，使得它不是光用于发送ajax而是还要返回promise对象
+        // 执行send ajax的结果和对应的值都存放在promiseState和promiseResult里面了
+        // 所以返回Promise即可
+        function sendAjax(url){
+            return new Promise((resolve,reject)=>{
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET',url);
+                xhr.send();
+                xhr.onreadystatechange = ()=>{
+                    if(xhr.readyState==4){
+                        if(xhr.status==200){
+                            resolve(xhr.response)
+                        }else{
+                            reject(xhr.status)
+                        }
+                    }
+                }
+            })
+        }
+
+        let btn = document.querySelector('button');
+        btn.addEventListener('click', async function(){ // 这里直接传入异步函数
+            try{
+                let result = await sendAjax("http://jsonplaceholder.typicode.com/posts")
+                console.log(result) // 这个就相当于then方法里面的回调函数（成功的那个）
+            }catch(e){
+                console.warn(e)
+            }
+        })
+    </script>
+</body>
+</html>

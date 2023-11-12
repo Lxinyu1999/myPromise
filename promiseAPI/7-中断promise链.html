@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中断链条</title>
+</head>
+<body>
+    <script>
+        let p = new Promise((res,rej)=>{
+            setTimeout(()=>{
+                res('我不输出');
+            },1000)
+        })
+
+        p.then(value=>{
+            console.log("中断")
+            // 中断只有一个方法：返回pending状态的promise对象
+            return new Promise(()=>{}) // 因为是pending状态，所以后续then方法永远不会被调用了，因为状态没有改变啊！所以回调函数then,catch一辈子无法执行
+        }).then(value=>{
+            throw "我不输出"
+        }).then(value=>{
+            console.log(333)
+        }).catch(reason=>{
+            console.warn(reason);
+        })
+
+    </script>
+</body>
+</html>

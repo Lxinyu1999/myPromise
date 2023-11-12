@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>串联多个任务</title>
+</head>
+<body>
+    <script>
+        let p = new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                resolve('我不输出');
+            },1000)
+        })
+
+        // 回顾：then方法的返回结果就是promise
+        p.then(value=>{
+            // 返回一个新的promise对象
+            return new Promise((res,rej)=>{
+                res("Success")
+            })
+        
+            // 再次调用
+        }).then(value=>{
+            console.log(value)
+        }).then(value=>{
+            // 再次调用then，是什么结果？答案是undefined
+            // 因为上一个then方法，他就打印了一下，对于返回的promise我们什么都没做，也什么值都没传
+            // 也就是说res/rej没收到任何值，那怎么传给下一个then方法的value/reason呢，显然是不能的，所以value就是个空值undefined
+            console.log(value)
+            // 如果能输出上一个then返回的Promise对象，那它应该是pending状态，但是由于那个Promise对象没有名字，是匿名，我们无法输出。
+        })
+    </script>
+</body>
+</html>
